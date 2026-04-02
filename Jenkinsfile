@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         AWS_REGION = "eu-north-1"
-        S3_BUCKET = "react102026"
-        CLOUDFRONT_DISTRIBUTION_ID = "E2SOKDTZQC348S"
+        S3_BUCKET = "task-manager002"
+        CLOUDFRONT_DISTRIBUTION_ID = "E37F27H7BLUDBY"
         NODE_OPTIONS = "--openssl-legacy-provider"
     }
 
@@ -17,7 +17,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
-                    credentialsId: 'frontend-credentials',
+                    credentialsId: 'git-cred-akjus',
                     url: 'https://github.com/Kameshjustin/Devops-pro-Frontend-app.git'
             }
         }
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'react1126'
+                    credentialsId: 'askey-seakey-cred-aj'
                 ]]) {
                     sh '''
                       aws s3 sync build/ s3://${S3_BUCKET}/ \
@@ -66,7 +66,7 @@ pipeline {
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'react1126'
+                    credentialsId: 'askey-seakey-cred-aj'
                 ]]) {
                     sh '''
                       aws cloudfront create-invalidation \
@@ -80,10 +80,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Frontend deployed successfully to S3 + CloudFront!"
+            echo "Frontend deployed successfully to S3 + CloudFront!"
         }
         failure {
-            echo "❌ Pipeline failed. Check Jenkins logs."
+            echo "Pipeline failed!!!!!!!!. Check Jenkins logs."
         }
     }
 }
